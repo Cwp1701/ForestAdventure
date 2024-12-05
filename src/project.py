@@ -6,7 +6,7 @@ from pygame.locals import *
 RESOLUTION = (1280, 720)
 
 class Player:
-
+    # TODO: Refactor player class to work better with collision logic
     def __init__(self, x, y, width, height, speed):
         self.x = x
         self.y = y
@@ -28,6 +28,8 @@ class Player:
         # Ensure player stays within the bounds of the game window
         self.x = max(0, min(self.x, RESOLUTION[0] - self.width))
         self.y = max(0, min(self.y, RESOLUTION[1] - self.height))
+
+        # TODO: Check for collision against walls
 
     def draw(self, surface):
         pygame.draw.rect(surface, (0, 0, 0), (self.x, self.y, self.width, self.height))
@@ -59,9 +61,13 @@ def main():
 
     walls = [
         # Top Left Wall
-        Wall(0, 0, 600, 300),
+        Wall(0, 0, 600, 330),
         # Top Right Wall
-        Wall(1280 - 600, 0, 600, 300)
+        Wall(1280 - 600, 0, 600, 330),
+        # Bottom Left Wall
+        Wall(0, 720 - 300, 600, 300),
+        # Bottom Right Wall
+        Wall(1280 - 600, 720 - 300, 600, 300)
     ]
 
     running = True
@@ -71,6 +77,10 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                pygame.quit()
 
         player_input = pygame.key.get_pressed()
 
