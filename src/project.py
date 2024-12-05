@@ -7,7 +7,6 @@ RESOLUTION = (1280, 720)
 
 class Player:
     player_color = (0, 0, 0)
-    # TODO: Refactor player class to work better with collision logic
     def __init__(self, x, y, width, height, speed):
         self.x = x
         self.y = y
@@ -17,6 +16,7 @@ class Player:
         self.speed = speed
 
     def movement(self, player_input, walls):
+        # Store players x and y movement in order to make changes in case of a collision
         x_movement = 0
         y_movement = 0
 
@@ -33,6 +33,7 @@ class Player:
         self.rect.x += x_movement
         self.rect.y += y_movement
 
+        # Handles collision with game walls
         for wall in walls:
             if self.rect.colliderect(wall):
                 self.rect.x -= x_movement
@@ -42,13 +43,10 @@ class Player:
         self.rect.x = max(0, min(self.rect.x, RESOLUTION[0] - self.rect.width))
         self.rect.y = max(0, min(self.rect.y, RESOLUTION[1] - self.rect.height))
 
-        # TODO: Check for collision against walls
-
     def draw(self, surface):
         pygame.draw.rect(surface, self.player_color, self.rect)
 
 class Wall:
-    # TODO: Implement Walls with collision
     def __init__(self, x, y, width, height):
         self.x = x
         self.y = y
@@ -58,6 +56,11 @@ class Wall:
 
     def draw(self, surface):
         pygame.draw.rect(surface, (149, 37, 37), self.rect)
+
+class TextDisplay:
+    def __init__(self):
+        # TODO: Implement text display system
+        pass
 
 
 def main():
