@@ -63,6 +63,8 @@ class Wall:
 def main():
 
     background_color = (5, 158, 41)
+    location1_color = (78, 25, 25)
+    location2_color = (108, 108, 108)
 
     clock = pygame.time.Clock()
 
@@ -85,6 +87,9 @@ def main():
         Wall(1280 - 600, 720 - 300, 600, 300)
     ]
 
+    location1 = pygame.Rect(600, 0, 80, 20)
+    location2 = pygame.Rect(600, 720-20, 80, 20)
+
     running = True
 
     while running:
@@ -104,8 +109,12 @@ def main():
         player.movement(player_input, walls)
         player.draw(screen)
 
+
         for wall in walls:
             wall.draw(screen)
+
+        pygame.draw.rect(screen, location1_color, location1)
+        pygame.draw.rect(screen, location2_color, location2)
 
         clock.tick(30)
         pygame.display.flip()
