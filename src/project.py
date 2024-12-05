@@ -6,33 +6,46 @@ from pygame.locals import *
 RESOLUTION = (1280, 720)
 
 class Player:
+    player_color = (0, 0, 0)
     # TODO: Refactor player class to work better with collision logic
     def __init__(self, x, y, width, height, speed):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.speed = speed
 
-    def movement(self, player_input):
+    def movement(self, player_input, walls):
+        x_movement = 0
+        y_movement = 0
+
         # Handle player Movement using W, A, S, D
         if player_input[K_w]:
-            self.y -= self.speed
+            y_movement -= self.speed
         if player_input[K_s]:
-            self.y += self.speed
+            y_movement += self.speed
         if player_input[K_a]:
-            self.x -= self.speed
+            x_movement -= self.speed
         if player_input[K_d]:
-            self.x += self.speed
+            x_movement += self.speed
+
+        self.rect.x += x_movement
+        self.rect.y += y_movement
+
+        for wall in walls:
+            if self.rect.colliderect(wall):
+                self.rect.x -= x_movement
+                self.rect.y -= y_movement
 
         # Ensure player stays within the bounds of the game window
-        self.x = max(0, min(self.x, RESOLUTION[0] - self.width))
-        self.y = max(0, min(self.y, RESOLUTION[1] - self.height))
+        self.rect.x = max(0, min(self.rect.x, RESOLUTION[0] - self.rect.width))
+        self.rect.y = max(0, min(self.rect.y, RESOLUTION[1] - self.rect.height))
 
         # TODO: Check for collision against walls
 
     def draw(self, surface):
-        pygame.draw.rect(surface, (0, 0, 0), (self.x, self.y, self.width, self.height))
+        pygame.draw.rect(surface, self.player_color, self.rect)
 
 class Wall:
     # TODO: Implement Walls with collision
@@ -41,8 +54,10 @@ class Wall:
         self.y = y
         self.width = width
         self.height = height
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+
     def draw(self, surface):
-        pygame.draw.rect(surface, (149, 37, 37), (self.x, self.y, self.width, self.height))
+        pygame.draw.rect(surface, (149, 37, 37), self.rect)
 
 
 def main():
@@ -86,7 +101,7 @@ def main():
 
         screen.fill(background_color)
 
-        player.movement(player_input)
+        player.movement(player_input, walls)
         player.draw(screen)
 
         for wall in walls:
