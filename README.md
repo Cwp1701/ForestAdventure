@@ -26,5 +26,5 @@ walls and the player. I would also like to learn how to implement animation for 
 disappearing as well as a fade for when the player leaves. It would also be interesting to explore things like
 PyGame's audio system for things such as footsteps and forest ambience.
 
-Overall, I am happy with how this project came out. However, I do believe I should have dedicated more time for
+Overall, I am happy with how this project came out. However, I do believe I should have dedicated more time to
 creating art for the game.
