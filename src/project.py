@@ -158,6 +158,7 @@ def main():
             display_text2.text = "Finally! A way through (You've found the way through, press Esc to quit!)"
         else:
             display_text.text = ""
+            display_text2.text = ""
 
         display_text.draw(screen)
         display_text2.draw(screen)
