@@ -1,7 +1,7 @@
 # Forest Adventure
 
 ## Demo
-Demo Video: <URL>
+Demo Video: [Video Demo on YouTube](https://www.youtube.com/watch?v=y79KwM6Gozo)
 
 ## GitHub Repository
 GitHub Repo: [Forest Adventure Repository](https://github.com/Cwp1701/ForestAdventure.git)
@@ -23,8 +23,8 @@ points to help complete the project.
 
 If I were to come back in the future, I would love to implement some art to the project for things like the forest
 walls and the player. I would also like to learn how to implement animation for things like text showing and
-disappearing as well as a fade for when the player leaves. It would also be interesting to explore things like
-PyGame's audio system for things such as footsteps and forest ambience.
+disappearing as well as a fade for when the player leaves. It would also be interesting to explore PyGame's 
+audio system for things such as footsteps and forest ambience.
 
 Overall, I am happy with how this project came out. However, I do believe I should have dedicated more time to
 creating art for the game.
