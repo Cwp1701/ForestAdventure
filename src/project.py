@@ -55,29 +55,44 @@ class Wall:
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
     def draw(self, surface):
-        pygame.draw.rect(surface, (149, 37, 37), self.rect)
+        pygame.draw.rect(surface, (88, 15, 15), self.rect)
 
 class TextDisplay:
-    def __init__(self):
-        # TODO: Implement text display system
-        pass
+    def __init__(self, x, y, font_size, color):
+        self.x = x
+        self.y = y
+        self.font = pygame.font.Font(None, font_size)
+        self.color = color
+        self.text = ""
+
+    def change_text(self, text):
+        self.text = text
+
+    def draw(self, surface):
+        display_text = self.font.render(self.text, True, self.color)
+        surface.blit(display_text, (self.x, self.y))
 
 
 def main():
+    pygame.init()
 
     background_color = (5, 158, 41)
     location1_color = (78, 25, 25)
     location2_color = (108, 108, 108)
+    location3_color = (158, 158, 158)
 
     clock = pygame.time.Clock()
 
     # Game Rendering
     screen = pygame.display.set_mode(RESOLUTION)
     pygame.display.flip()
-    pygame.init()
+
     pygame.display.set_caption("Forest Adventure")
 
     player = Player(5, RESOLUTION[1] // 2, 25, 25, 5)
+
+    display_text = TextDisplay(font_size=30, color=(255, 255, 255), x=player.x + 20, y=player.y)
+    display_text2 = TextDisplay(font_size=30, color=(255, 255, 255), x=player.x + 20, y=player.y)
 
     walls = [
         # Top Left Wall
@@ -92,6 +107,7 @@ def main():
 
     location1 = pygame.Rect(600, 0, 80, 20)
     location2 = pygame.Rect(600, 720-20, 80, 20)
+    location3 = pygame.Rect(1280-20, 330, 80, 90)
 
     running = True
 
@@ -100,10 +116,9 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                pygame.quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
 
         player_input = pygame.key.get_pressed()
 
@@ -112,12 +127,31 @@ def main():
         player.movement(player_input, walls)
         player.draw(screen)
 
+        display_text.x = player.rect.x + 25
+        display_text.y = player.rect.y
+
+        display_text2.x = display_text.x - 750
+        display_text2.y = display_text.y
+
 
         for wall in walls:
             wall.draw(screen)
 
         pygame.draw.rect(screen, location1_color, location1)
         pygame.draw.rect(screen, location2_color, location2)
+        pygame.draw.rect(screen, location3_color, location3)
+
+        if player.rect.colliderect(location1):
+            display_text.text = "Looks like an old decrepit cabin, nothing interesting this way..."
+        elif player.rect.colliderect(location2):
+            display_text.text = "I can't go this way, the path is blocked by large boulders "
+        elif player.rect.colliderect(location3):
+            display_text2.text = "Finally! A way through (You've found the way through, press Esc to quit!)"
+        else:
+            display_text.text = ""
+
+        display_text.draw(screen)
+        display_text2.draw(screen)
 
         clock.tick(30)
         pygame.display.flip()
