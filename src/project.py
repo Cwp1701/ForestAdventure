@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 
 
-# Global resolution constant since it is needed throughout the project
+# Global resolution constant, since it is needed throughout the project.
 RESOLUTION = (1280, 720)
 
 class Player:
@@ -30,6 +30,7 @@ class Player:
         if player_input[K_d]:
             x_movement += self.speed
 
+        # Updates the players collision shape based on above inputs
         self.rect.x += x_movement
         self.rect.y += y_movement
 
@@ -77,7 +78,7 @@ def main():
     pygame.init()
 
     background_color = (5, 158, 41)
-    location1_color = (78, 25, 25)
+    location1_color = (112, 42, 42)
     location2_color = (108, 108, 108)
     location3_color = (158, 158, 158)
 
@@ -92,6 +93,8 @@ def main():
     player = Player(5, RESOLUTION[1] // 2, 25, 25, 5)
 
     display_text = TextDisplay(font_size=30, color=(255, 255, 255), x=player.x + 20, y=player.y)
+
+    # Location 3 uses a new text display since the first one would result in text being off-screen
     display_text2 = TextDisplay(font_size=30, color=(255, 255, 255), x=player.x + 20, y=player.y)
 
     walls = [
@@ -105,6 +108,7 @@ def main():
         Wall(1280 - 600, 720 - 300, 600, 300)
     ]
 
+    # Creation of locations that the player interacts with
     location1 = pygame.Rect(600, 0, 80, 20)
     location2 = pygame.Rect(600, 720-20, 80, 20)
     location3 = pygame.Rect(1280-20, 330, 80, 90)
@@ -113,6 +117,7 @@ def main():
 
     while running:
 
+        # Handles game quitting via ESCAPE
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -124,23 +129,27 @@ def main():
 
         screen.fill(background_color)
 
+        # Sets up player movement and drawing
         player.movement(player_input, walls)
         player.draw(screen)
 
+        # Offsets text displayed based off of player
         display_text.x = player.rect.x + 25
         display_text.y = player.rect.y
 
         display_text2.x = display_text.x - 750
         display_text2.y = display_text.y
 
-
+        # Draw the walls seen in the level
         for wall in walls:
             wall.draw(screen)
 
+        # Draws the locations created above
         pygame.draw.rect(screen, location1_color, location1)
         pygame.draw.rect(screen, location2_color, location2)
         pygame.draw.rect(screen, location3_color, location3)
 
+        # Handles displaying, or not displaying text based on what the player is colliding with
         if player.rect.colliderect(location1):
             display_text.text = "Looks like an old decrepit cabin, nothing interesting this way..."
         elif player.rect.colliderect(location2):
